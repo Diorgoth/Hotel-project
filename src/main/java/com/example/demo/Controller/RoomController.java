@@ -10,9 +10,9 @@ import com.example.demo.Repository.RoomRepository;
 import lombok.var;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,12 +54,12 @@ public class RoomController {
     }
 
     @GetMapping("/byhotel/{id}")
-    public Page<Room> getRoomslist(@RequestParam int page){
+    public Page<Room> getRoomslist(@PathVariable Integer id,@RequestParam int page,@RequestParam Integer size){
 
-        Pageable pageable = PageRequest.of(page,10);
-        Page<Room> roomPage = roomRepository.findAll(pageable);
+        Pageable pageable = (Pageable) PageRequest.of(page, size);
+
+        Page<Room> roomPage = roomRepository.findAllByHotelId(id, pageable);
         return roomPage;
-
     }
 
     @PostMapping("/post")
